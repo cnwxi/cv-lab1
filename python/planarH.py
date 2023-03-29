@@ -5,15 +5,19 @@ import numpy as np
 def computeH(x1, x2):
     # Q3.6
     # Compute the homography between two sets of points
-    tmp, _ = np.shape(x1)
+    tmp = x1.shape[0]
     tmp_list = []
-    tmp_array = None
     for i in range(tmp):
         tmp_list.append([-x2[i, 0], -x2[i, 1], -1, 0, 0, 0, x1[i, 0] * x2[i, 0], x1[i, 0] * x2[i, 1], x1[i, 0]])
         tmp_list.append([0, 0, 0, -x2[i, 0], -x2[i, 1], -1, x1[i, 1] * x2[i, 0], x1[i, 1] * x2[i, 1], x1[i, 1]])
-        tmp_array = np.array(tmp_list)
-    _, _, v = np.linalg.svd(tmp_array)
-    H2to1 = np.reshape(v[-1, :] / v[-1, -1], (3, 3))
+    tmp_array = np.array(tmp_list)
+    _, _, v = np.linalg.svd(tmp_array, full_matrices=True)
+    if v[-1, -1] != 0:
+        v = v[-1, :] / v[-1, -1]
+    else:
+        v = (v[-1, :] + 0.01) / 0.01
+    H2to1 = v.reshape(3, 3)
+
     return H2to1
 
 
@@ -30,19 +34,17 @@ def computeH_norm(x1, x2):
     x1_norm = np.max(np.linalg.norm(x1_shift, axis=1))
     x2_norm = np.max(np.linalg.norm(x2_shift, axis=1))
     x1_sqrt = np.sqrt(2) / x1_norm
-    x2_sqrt = np.sqrt(2) / x1_norm
+    x2_sqrt = np.sqrt(2) / x2_norm
     x1_shift = x1_shift * x1_sqrt
     x2_shift = x2_shift * x2_sqrt
     # Similarity transform 1
     t1 = np.asarray([[x1_sqrt, 0, -x1_sqrt * x1_mean[0]],
                      [0, x1_sqrt, -x1_sqrt * x1_mean[1]],
                      [0, 0, 1]])
-    x1 = np.hstack((x1, np.ones(length).reshape(-1, 1)))
     # Similarity transform 2
     t2 = np.asarray([[x2_sqrt, 0, -x2_sqrt * x2_mean[0]],
                      [0, x2_sqrt, -x2_sqrt * x2_mean[1]],
                      [0, 0, 1]])
-    x2 = np.hstack((x2, np.ones(length).reshape(-1, 1)))
     # Compute homography
     H2to1 = computeH(x1_shift, x2_shift)
     # Denormalization

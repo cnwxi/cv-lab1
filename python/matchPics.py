@@ -1,9 +1,8 @@
-import numpy as np
 import cv2
-import skimage.color
-from helper import briefMatch
-from helper import computeBrief
-from helper import corner_detection
+
+from python.helper import briefMatch
+from python.helper import computeBrief
+from python.helper import corner_detection
 
 
 def matchPics(I1, I2):

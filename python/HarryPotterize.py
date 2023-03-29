@@ -20,6 +20,7 @@ def Q3_9():
     bestH2to1, inliers = computeH_ransac(locs1, locs2)
     hp_cover = cv2.resize(hp_cover, ((cv_cover.shape[1]), cv_cover.shape[0]))
     comp_img = compositeH(bestH2to1, hp_cover, cv_desk)
+    cv2.imwrite('../data/composite_img.jpg', comp_img)
     list = [cv_cover, cv_desk, hp_cover, comp_img]
     plt.figure()
     for i, item in enumerate(list):
