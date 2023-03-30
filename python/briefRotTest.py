@@ -20,6 +20,7 @@ for i in tqdm(range(36)):
     # cv2.waitKey(0)
     # Compute features, descriptors and Match features
     matches, locs1, locs2 = matchPics(cv_cover, rot_cover)
+    print(locs1)
     if i % 12 == 0:
         plotMatches(cv_cover, rot_cover, matches, locs1, locs2)
     # Update histogram

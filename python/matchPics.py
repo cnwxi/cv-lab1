@@ -16,11 +16,11 @@ def matchPics(I1, I2):
     if len(image2.shape) >= 3:
         image2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
     # Detect Features in Both Images
-    locs1 = corner_detection(image1)
-    locs2 = corner_detection(image2)
+    locs1 = corner_detection(image1, sigma=0.15)
+    locs2 = corner_detection(image2, sigma=0.15)
     # Obtain descriptors for the computed feature locations
     desc1, locs1 = computeBrief(image1, locs1)
     desc2, locs2 = computeBrief(image2, locs2)
     # Match features using the descriptors
-    matches = briefMatch(desc1, desc2)
+    matches = briefMatch(desc1, desc2, ratio=0.8)
     return matches, locs1, locs2

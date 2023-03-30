@@ -18,6 +18,7 @@ def Q3_9():
     locs2 = locs2[matches[:, 1]]
     locs2 = locs2[:, [1, 0]]
     bestH2to1, inliers = computeH_ransac(locs1, locs2)
+    print(bestH2to1)
     hp_cover = cv2.resize(hp_cover, ((cv_cover.shape[1]), cv_cover.shape[0]))
     comp_img = compositeH(bestH2to1, hp_cover, cv_desk)
     cv2.imwrite('../data/composite_img.jpg', comp_img)

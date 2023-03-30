@@ -15,7 +15,7 @@ def computeH(x1, x2):
     if v[-1, -1] != 0:
         v = v[-1, :] / v[-1, -1]
     else:
-        v = (v[-1, :] + 0.01) / 0.01
+        v = v[-1, :]
     H2to1 = v.reshape(3, 3)
 
     return H2to1
@@ -59,6 +59,7 @@ def computeH_ransac(x1, x2):
     inliers = []
     iterations = 1000
     inlier_tmp = 0
+    tor = 5
     bestH2to1 = None
     for i in range(iterations):
         idx = np.arange(0, len(x1))
@@ -68,7 +69,7 @@ def computeH_ransac(x1, x2):
         x2_ = np.hstack((x2, np.ones(len(x2)).reshape(-1, 1)))
         x1_ = np.matmul(H2to1, x2_.T)[0:2, :]
         dist = np.linalg.norm(x1.T - x1_, axis=0)
-        inlier = (dist < 2).astype(int)
+        inlier = (dist < tor).astype(int)
         inlier_cont = np.sum(inlier)
         if inlier_cont > inlier_tmp:
             inliers = inlier
