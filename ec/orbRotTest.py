@@ -13,7 +13,6 @@ def orb_fc():
     tmp = 1
     plt.suptitle('orbRotTest')
     for i in tqdm(range(36)):
-
         test_img_ort = scipy.ndimage.rotate(test_img, angle=i * 10)
         if (len(img.shape) >= 3):
             img1 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -21,12 +20,6 @@ def orb_fc():
             test_img1 = cv2.cvtColor(test_img_ort, cv2.COLOR_BGR2GRAY)
         kp1, desc1 = orb.detectAndCompute(img1, None)
         kp2, desc2 = orb.detectAndCompute(test_img1, None)
-        # matches = bf.knnMatch(desc1, desc2, k=2)
-        # good_match = []
-        # for m, n in matches:
-        #     if m.distance < 0.75 * n.distance:
-        #         good_match.append([m])
-        # matches_list.append(len(good_match))
         matches = bf.match(desc1, desc2)
         matches_list.append(len(matches))
 
