@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def panaroma(option):
+def panaroma(option, path, num):
     # img1 = cv2.imread('../data/right.png')
     # img2 = cv2.imread('../data/left.png')
-    img1 = cv2.imread('../data/pano_right.jpg')
-    img2 = cv2.imread('../data/pano_left.jpg')
+    img1 = cv2.imread(path[0])
+    img2 = cv2.imread(path[1])
     img1_gray = img1
     img2_gray = img2
 
@@ -45,9 +45,12 @@ def panaroma(option):
         plt.subplot(1, 2, i + 1)
         plt.imshow(cv2.cvtColor(element, cv2.COLOR_BGR2RGB))
     plt.show()
-    cv2.imwrite(f'../data/pano_out_{option}.jpg', output)
+    cv2.imwrite(f'../data/pano_out_{option}_{num}.jpg', output)
 
 
 if __name__ == '__main__':
-    for i in ['orb', 'sift']:
-        panaroma(i)
+    path = [['../data/right.png', '../data/right.png'],
+            ['../data/pano_right.jpg', '../data/pano_left.jpg']]
+    for i, element in enumerate(path):
+        for j in ['orb', 'sift']:
+            panaroma(j, element, i)
