@@ -43,14 +43,15 @@ def Q4_1():
         ar_frame = cv2.resize(ar[i, :, :, :], (cv_cover.shape[1], cv_cover.shape[0]))
         # ar_frame_gray = cv2.cvtColor(ar_frame, cv2.COLOR_BGR2GRAY)
         book_frame = book[i, :, :, :]
-        # book_frame_gray = cv2.cvtColor(book_frame, cv2.COLOR_BGR2GRAY)
-        # cv_cover_gray = cv2.cvtColor(cv_cover, cv2.COLOR_BGR2GRAY)
+        book_frame_gray = cv2.cvtColor(book_frame, cv2.COLOR_BGR2GRAY)
+        cv_cover_gray = cv2.cvtColor(cv_cover, cv2.COLOR_BGR2GRAY)
 
-        matches, locs1, locs2 = matchPics(book_frame, cv_cover)
+        matches, locs1, locs2 = matchPics(book_frame_gray, cv_cover_gray)
         locs1 = locs1[matches[:, 0]]
         locs1 = locs1[:, [1, 0]]
         locs2 = locs2[matches[:, 1]]
         locs2 = locs2[:, [1, 0]]
+
         bestH2to1, inliers = computeH_ransac(locs1, locs2)
         comp_img = compositeH(bestH2to1, ar_frame, book_frame)
         comp_img = cv2.cvtColor(comp_img, cv2.COLOR_BGR2RGB)
