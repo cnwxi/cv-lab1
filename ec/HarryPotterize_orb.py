@@ -31,17 +31,11 @@ for i in matches:
 print('min', min_dis)
 print('max', max_dis)
 for i in matches:
-    if i.distance <= max(1.4 * min_dis, 0.5 * max_dis):
+    if i.distance <= max(1.36 * min_dis, 0.5 * max_dis):
         good.append(i)
 
-# matches = flann.knnMatch(desc1, desc2, k=2)
-# good = []
-# for m, n in matches:
-#     if m.distance < 0.75 * n.distance:
-#         good.append(m)
-
 matches = good
-print(len(matches))
+
 img = cv2.drawMatches(cv_cover, kp1, cv_desk, kp2, matches, None, flags=2)
 
 locs1 = np.array([[kp1[i.queryIdx].pt[0], kp1[i.queryIdx].pt[1]] for i in matches])
@@ -50,7 +44,7 @@ locs2 = np.array([[kp2[i.trainIdx].pt[0], kp2[i.trainIdx].pt[1]] for i in matche
 M, _ = cv2.findHomography(locs1, locs2, cv2.RANSAC)
 
 comp_img = compositeH(M, hp_cover, cv_desk)
-
+plt.suptitle('HappyPotter_orb.py')
 plt.subplot(2, 1, 1)
 plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
